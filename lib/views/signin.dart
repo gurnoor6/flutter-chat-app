@@ -11,6 +11,10 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +29,28 @@ class _SignInState extends State<SignIn> {
               child: Column(
                   mainAxisSize:MainAxisSize.min ,
                   children:[
-                    TextField(
-                      style: simpleTextStyle(),
-                      decoration: textFieldInputDecoration("Email"),
-                    ),
-                    TextField(
-                      style:simpleTextStyle(),
-                      decoration: textFieldInputDecoration("Password"),
+                    Form(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            validator: (val){
+                              return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null :"Please provide valid email!!";
+                            },
+                            controller: emailTextEditingController,
+                            style: simpleTextStyle(),
+                            decoration: textFieldInputDecoration("Email"),
+                          ),
+                          TextFormField(
+                            obscureText: true,
+                            validator: (val){
+                              return val.length>6 ? null:"Please provide password 6+ characters";
+                            },
+                            controller: passwordTextEditingController,
+                            style:simpleTextStyle(),
+                            decoration: textFieldInputDecoration("Password"),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height:8),
                     Container(

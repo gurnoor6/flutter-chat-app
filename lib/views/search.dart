@@ -24,6 +24,10 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  createChatRoomAndStartConversation(String userName){
+    List<String> users = [userName, myName];
+  }
+
   Widget searchList(){
     return searchSnapshot==null? Container(): ListView.builder(
       itemCount: searchSnapshot.documents.length,
@@ -109,23 +113,30 @@ class SearchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children:[
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children:[
-              Text(userName, style: simpleTextStyle(),),
-              Text(userEmail, style:simpleTextStyle(),),
+              Text(userName, style: mediumTextStyle(),),
+              Text(userEmail, style:mediumTextStyle(),),
             ]
           ),
           Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            padding: EdgeInsets.symmetric(horizontal:16 ,vertical:8 ),
+          GestureDetector(
+            onTap: (){
 
-            child:Text("Message")
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: EdgeInsets.symmetric(horizontal:16 ,vertical:12 ),
+
+              child:Text("Message",style: mediumTextStyle(),)
+            ),
           )
         ]
       )
