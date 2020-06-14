@@ -1,8 +1,14 @@
 import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/services/database.dart';
 import 'package:chatapp/widgets/widget.dart';
 import "package:flutter/material.dart";
 
+import 'chatRoomsScreen.dart';
+
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -12,21 +18,32 @@ class _SignUpState extends State<SignUp> {
   bool isLoading = false;
   
   AuthMethods authMethods= new AuthMethods(); 
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState> ();
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
-  signMeUP(){
+  signMeUp(){
     if(formKey.currentState.validate()){
+      Map<String,String> userInfoMap = {
+        "name":userNameTextEditingController.text,
+        "email": emailTextEditingController.text
+      };
+
       setState(() {
         isLoading=true;
       });
       
       authMethods.signUpWithEmailAndPassword
         (emailTextEditingController.text, passwordTextEditingController.text).then((val) {
-          print(val);
+//          print(val);
+          databaseMethods.uploadUserInfo(userInfoMap);
+
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context)=> ChatRoom()
+          ));
       });
     }
   }
@@ -91,7 +108,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height:8),
                     GestureDetector(
                       onTap:(){
-                        signMeUP();
+                        signMeUp();
                       },
                       child: Container(
                           alignment: Alignment.center,
@@ -129,11 +146,19 @@ class _SignUpState extends State<SignUp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:[
                         Text("Already have an account? ", style:mediumTextStyle()),
-                        Text("Sign In Here",style:TextStyle(
-                          fontSize: 17,
-                          color:Colors.white,
-                          decoration: TextDecoration.underline,
-                        )),
+                        GestureDetector(
+                          onTap: (){
+                            widget.toggle();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Text("Sign In Here",style:TextStyle(
+                              fontSize: 17,
+                              color:Colors.white,
+                              decoration: TextDecoration.underline,
+                            )),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height:50)
