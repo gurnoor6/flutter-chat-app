@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatapp/helper/constants.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/widgets/widget.dart';
@@ -17,7 +19,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
 
-
   Stream chatMessageStream;
   Widget ChatMessageList(){
     return StreamBuilder(
@@ -29,6 +30,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
             return MessageTile(snapshot.data.documents[index].data["message"],
                 snapshot.data.documents[index].data["sendBy"]==Constants.myName);
           },
+          reverse: true,
         ) : Container();
       }
     );
@@ -55,17 +57,27 @@ class _ConversationScreenState extends State<ConversationScreen> {
         chatMessageStream = val;
       });
     });
+
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Text(
+            widget.chatRoomId.toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+        ),
+      ),
       body: Container(
         child: Stack(
           children:[
-            ChatMessageList(),
+            Container(
+                margin: EdgeInsets.only(
+                  bottom: 50
+                ),
+                child: ChatMessageList()
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
