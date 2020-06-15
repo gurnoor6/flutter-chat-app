@@ -33,8 +33,8 @@ class _SignUpState extends State<SignUp> {
         "email": emailTextEditingController.text
       };
 
-      HelperFunction.saveUserNameSharedPreference(userNameTextEditingController.text);
-      HelperFunction.saveUserEmailSharedPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
 
 
       setState(() {
@@ -45,7 +45,7 @@ class _SignUpState extends State<SignUp> {
         (emailTextEditingController.text, passwordTextEditingController.text).then((val) {
 //          print(val);
           databaseMethods.uploadUserInfo(userInfoMap);
-          HelperFunction.saveUserLoggedInSharePreference(true);
+          HelperFunctions.saveUserLoggedInSharePreference(true);
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context)=> ChatRoom()
           ));

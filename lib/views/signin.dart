@@ -1,5 +1,11 @@
+import 'package:chatapp/helper/helperfunctions.dart';
+import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/services/database.dart';
 import 'package:chatapp/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
+
+import 'chatRoomsScreen.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -12,8 +18,47 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
 
+  final formKey = GlobalKey<FormState> ();
+  AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  QuerySnapshot snapshotUserInfo;
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
+
+  bool isLoading=false;
+  signIn(){
+    if(formKey.currentState.validate()){
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+
+
+      databaseMethods.getUserByUserEmail(emailTextEditingController.text)
+          .then((val){
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserNameSharedPreference(snapshotUserInfo.documents[0].data["name"]);
+      });
+
+
+
+      //TODO function to get user details
+      setState(() {
+        this.isLoading=true;
+      });
+
+
+
+      authMethods.signInWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text)
+        .then((val){
+            if(val!=null){
+              HelperFunctions.saveUserLoggedInSharePreference(true);
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context)=> ChatRoom()
+              ));
+            }
+        });
+
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +75,7 @@ class _SignInState extends State<SignIn> {
                   mainAxisSize:MainAxisSize.min ,
                   children:[
                     Form(
+                      key:formKey,
                       child: Column(
                         children: [
                           TextFormField(
@@ -61,20 +107,25 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     SizedBox(height:8),
-                    Container(
-                        alignment: Alignment.center,
-                        width:MediaQuery.of(context).size.width,
-                        padding:EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                            gradient:LinearGradient(
-                                colors:[
-                                  const Color(0xff007EF4),
-                                  const Color(0xff2A75BC)
-                                ]
-                            ),
-                            borderRadius: BorderRadius.circular(30)
-                        ),
-                        child:Text("Sign In",style: mediumTextStyle(),)
+                    GestureDetector(
+                      onTap: (){
+                        signIn();
+                      },
+                      child: Container(
+                          alignment: Alignment.center,
+                          width:MediaQuery.of(context).size.width,
+                          padding:EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                              gradient:LinearGradient(
+                                  colors:[
+                                    const Color(0xff007EF4),
+                                    const Color(0xff2A75BC)
+                                  ]
+                              ),
+                              borderRadius: BorderRadius.circular(30)
+                          ),
+                          child:Text("Sign In",style: mediumTextStyle(),)
+                      ),
                     ),
                     SizedBox(height:16),
                     Container(
