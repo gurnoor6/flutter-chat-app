@@ -23,12 +23,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return StreamBuilder(
       stream: chatMessageStream,
       builder : (context, snapshot){
-        return ListView.builder(
+        return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length ,
           itemBuilder: (context,index){
             return MessageTile(snapshot.data.documents[index].data["message"]);
           },
-        );
+        ) : Container();
       }
     );
   }
@@ -38,7 +38,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       print(messageController.text);
       Map<String, String> messageMap = {
         "message": messageController.text,
-        "sendBy" : Constants.myName
+        "sendBy" : Constants.myName,
+        "time": DateTime.now().millisecondsSinceEpoch.toString()
       };
       databaseMethods.addConversationMessages(widget.chatRoomId,messageMap);
       messageController.text="";
@@ -63,6 +64,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children:[
+            ChatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -122,6 +124,6 @@ class MessageTile extends StatelessWidget {
   MessageTile(this.message);
   @override
   Widget build(BuildContext context) {
-    return Text(message);
+    return Text(message, style:mediumTextStyle());
   }
 }

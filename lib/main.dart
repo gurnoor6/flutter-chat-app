@@ -1,4 +1,5 @@
 import 'package:chatapp/helper/authenticate.dart';
+import 'package:chatapp/helper/constants.dart';
 import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/views/chatRoomsScreen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,6 @@ class _MyAppState extends State<MyApp> {
   getLoggedInState() async{
     await HelperFunctions.getUserLoggedInSharedPreference().then((value){
       setState(() {
-
         userIsLoggedIn = value;
       });
     });
