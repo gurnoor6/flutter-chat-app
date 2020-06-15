@@ -1,6 +1,6 @@
 # chatapp
 
-A new Flutter application.
+This is a cross platform Chat Application made using Flutter.
 
 ## Getting Started
 
