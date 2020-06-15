@@ -1,10 +1,13 @@
 # chatapp
 
 This is a cross platform Chat Application made using Flutter.
-![Screenshot 1](Screenshots/1.png?raw=true)
 
 <div align="center">
     <img src="Screenshots/1.png" height="400px"</img> 
+    <img src="Screenshots/2.png" height="400px"</img> 
+    <img src="Screenshots/3.png" height="400px"</img> 
+    <img src="Screenshots/4.png" height="400px"</img> 
+    <img src="Screenshots/5.png" height="400px"</img> 
 </div>
 
 ## Getting Started
