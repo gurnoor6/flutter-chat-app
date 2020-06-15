@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/constants.dart';
 import "package:shared_preferences/shared_preferences.dart";
 
 class HelperFunctions{
@@ -14,6 +15,7 @@ class HelperFunctions{
 
   static Future<bool> saveUserNameSharedPreference(String userName) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    Constants.myName = userName;
     return await prefs.setString(sharedPreferenceUserNameKey, userName);
   }
 
