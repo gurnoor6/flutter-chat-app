@@ -3,6 +3,10 @@
 This is a cross platform Chat Application made using Flutter.
 ![Screenshot 1](Screenshots/1.png?raw=true)
 
+<div align="center">
+    <img src="Screenshots/1.png" height="400px"</img> 
+</div>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
