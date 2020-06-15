@@ -1,6 +1,7 @@
 # chatapp
 
 This is a cross platform Chat Application made using Flutter.
+![Screenshot 1](/screenshots/1.png?raw=true)
 
 ## Getting Started
 
